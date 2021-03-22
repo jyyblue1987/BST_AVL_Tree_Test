@@ -2,7 +2,7 @@
 #include "binary_search_tree.h"
 #include "avl_tree.h"
 
-using std::cout, std::endl, std::cin;
+using namespace std;
 
 int main() {
     // build a tree of ints
@@ -22,7 +22,7 @@ int main() {
     cout << "negative integer value := remove(|value|)" << endl;
     cout << "-----" << endl;
     if (isAVL) {
-        avl.print_tree();
+        // avl.print_tree();
     } else {
         bst.print_tree();
     }

@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <utility>
 
-using std::cout, std::endl;
+using namespace std;
 
 int main() {
     // TODO: write tests
