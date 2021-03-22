@@ -22,7 +22,7 @@ int main() {
     cout << "negative integer value := remove(|value|)" << endl;
     cout << "-----" << endl;
     if (isAVL) {
-        // avl.print_tree();
+        avl.print_tree();
     } else {
         bst.print_tree();
     }

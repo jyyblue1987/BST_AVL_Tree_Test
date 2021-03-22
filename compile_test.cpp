@@ -55,25 +55,25 @@ int main() {
     
     
     // AVL
-    // {
-    //    AVLTree<int> tree;
-    //    tree.insert(2);
-    //    tree.insert(1);
-    //    tree.insert(3);
-    //    tree.contains(4);
-    //    tree.find_min();
-    //    tree.find_max();
-    //    tree.remove(1);
-    // }
+    {
+       AVLTree<int> tree;
+       tree.insert(2);
+       tree.insert(1);
+       tree.insert(3);
+       tree.contains(4);
+       tree.find_min();
+       tree.find_max();
+       tree.remove(1);
+    }
     
-    // {
-    //    AVLTree<ComparableValue> tree;
-    //    tree.insert(ComparableValue(2));
-    //    tree.insert(ComparableValue(1));
-    //    tree.insert(ComparableValue(3));
-    //    tree.contains(ComparableValue(4));
-    //    tree.find_min();
-    //    tree.find_max();
-    //    tree.remove(ComparableValue(1));
-    // }
+    {
+       AVLTree<ComparableValue> tree;
+       tree.insert(ComparableValue(2));
+       tree.insert(ComparableValue(1));
+       tree.insert(ComparableValue(3));
+       tree.contains(ComparableValue(4));
+       tree.find_min();
+       tree.find_max();
+       tree.remove(ComparableValue(1));
+    }
 }
