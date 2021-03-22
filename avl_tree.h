@@ -25,6 +25,16 @@ private:
     AVNode<Comparable>* deleteNode(AVNode<Comparable>* node, Comparable v);
     AVNode<Comparable>* findMin(AVNode<Comparable>* node);
     void print(AVNode<Comparable>* node, int depth, std::ostream& out=std::cout);        
+
+	AVNode<Comparable>* balance(AVNode<Comparable>* );
+	int height(AVNode<Comparable>* );
+	int diff(AVNode<Comparable>* );
+	AVNode<Comparable>* rr_rotation(AVNode<Comparable>* );
+	AVNode<Comparable>* ll_rotation(AVNode<Comparable>* );
+	AVNode<Comparable>* lr_rotation(AVNode<Comparable>* );
+	AVNode<Comparable>* rl_rotation(AVNode<Comparable>* );
+	
+
 protected: 
     AVNode<Comparable>	*root;
 public:
@@ -139,8 +149,10 @@ AVNode<Comparable>* AVLTree<Comparable>::insertNode(AVNode<Comparable>* node, Co
 		node = getNewNode(v);
 	}else if(v <= node->data){
 		node->left = insertNode(node->left, v);
+		node = balance(node);
 	}else{
 		node->right = insertNode(node->right, v);
+		node = balance(node);
 	}
 	return node;
 } 
@@ -246,5 +258,103 @@ void AVLTree<Comparable>::print_tree(std::ostream& out)
     out << endl;    
 }
 
+template <typename Comparable>
+AVNode<Comparable>* AVLTree<Comparable>::balance(AVNode<Comparable> *temp)
+{
+    int bal_factor = diff(temp);
+	if (bal_factor > 1)
+	{
+		if (diff(temp->left) > 0)
+			temp = ll_rotation(temp);
+		else
+			temp = lr_rotation(temp);
+	}
+	else if (bal_factor < -1)
+	{
+		if (diff(temp->right) > 0)
+			temp = rl_rotation(temp);
+		else
+			temp = rr_rotation(temp);
+	}
+	return temp; 
+}
+
+/*
+* Height of AVL Tree
+*/
+template <typename Comparable>
+int AVLTree<Comparable>::height(AVNode<Comparable>* temp)
+{
+	int h = 0;
+	if (temp != NULL)
+	{
+		int l_height = height(temp->left);
+		int r_height = height(temp->right);
+		int max_height = max(l_height, r_height);
+		h = max_height + 1;
+	}
+	return h;
+}
+
+/*
+* Height Difference
+*/
+template <typename Comparable>
+int AVLTree<Comparable>::diff(AVNode<Comparable>* temp)
+{
+	int l_height = height(temp->left);
+	int r_height = height(temp->right);
+	int b_factor = l_height - r_height;
+	return b_factor;
+}
+
+/*
+* Right- Right Rotation
+*/
+template <typename Comparable>
+AVNode<Comparable>* AVLTree<Comparable>::rr_rotation(AVNode<Comparable>* parent)
+{
+	AVNode<Comparable>* temp;
+	temp = parent->right;
+	parent->right = temp->left;
+	temp->left = parent;
+	return temp;
+}
+/*
+* Left- Left Rotation
+*/
+template <typename Comparable>
+AVNode<Comparable>* AVLTree<Comparable>::ll_rotation(AVNode<Comparable>* parent)
+{
+	AVNode<Comparable>* temp;
+	temp = parent->left;
+	parent->left = temp->right;
+	temp->right = parent;
+	return temp;
+}
+
+/*
+* Left - Right Rotation
+*/
+template <typename Comparable>
+AVNode<Comparable>* AVLTree<Comparable>::lr_rotation(AVNode<Comparable>* parent)
+{
+	AVNode<Comparable>* temp;
+	temp = parent->left;
+	parent->left = rr_rotation(temp);
+	return ll_rotation(parent);
+}
+
+/*
+* Right- Left Rotation
+*/
+template <typename Comparable>
+AVNode<Comparable>* AVLTree<Comparable>::rl_rotation(AVNode<Comparable>* parent)
+{
+	AVNode<Comparable>* temp;
+	temp = parent->right;
+	parent->right = ll_rotation(temp);
+	return rr_rotation(parent);
+}
 
 #endif

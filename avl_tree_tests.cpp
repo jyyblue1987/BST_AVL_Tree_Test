@@ -29,4 +29,11 @@ int main() {
     // print the tree
     std::cout << "tree: " << std::endl;
     tree.print_tree();
+
+    AVLTree<int> tree1;
+    for(int i =  0; i < 10; i++)
+        tree1.insert(i);
+
+    tree1.print_tree();
+    
 }
