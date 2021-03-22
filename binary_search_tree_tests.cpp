@@ -16,9 +16,11 @@ int main() {
     tree.insert(2);
     tree.insert(8);
     tree.insert(10);
+    
     // search the tree
     std::cout << "contains 4? " << std::boolalpha << tree.contains(4) <<
     std::endl;
+    int x = 7;
     std::cout << "contains 7? " << std::boolalpha << tree.contains(7) <<
     std::endl;
     // remove the root
@@ -29,4 +31,14 @@ int main() {
     // print the tree
     std::cout << "tree: " << std::endl;
     tree.print_tree();
+
+    // copy contructor
+    BinarySearchTree<int> tree1 = tree;
+    int val = 20;
+    tree1.insert(20);
+
+    tree1.print_tree();
+    
+
+
 }

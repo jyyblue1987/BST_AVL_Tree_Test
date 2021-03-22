@@ -16,14 +16,14 @@ template <typename Comparable>
 class BinarySearchTree {
 private:
     Node<Comparable>* getNewNode(Comparable& v);
-    Node<Comparable>* insertNode(BinarySearchTree<Comparable>* root, Comparable& v);
+    Node<Comparable>* insertNode(Node<Comparable>* node, Comparable v);
     void make_empty();
     void freeNodeTree(Node<Comparable>* node);
     void copy(Node<Comparable>* node);
-    bool searchNode(Node<Comparable>* root, Comparable v);
-    Node<Comparable>* deleteNode(Node<Comparable>* root, Comparable v);
-    void print(Node<Comparable>* root, int depth, std::ostream& out=std::cout);
-
+    bool searchNode(Node<Comparable>* node, Comparable v);
+    Node<Comparable>* deleteNode(Node<Comparable>* node, Comparable v);
+    Node<Comparable>* findMin(Node<Comparable>* node);
+    void print(Node<Comparable>* node, int depth, std::ostream& out=std::cout);        
 protected: 
     Node<Comparable>	*root;
 
@@ -37,7 +37,7 @@ public:
     void remove(const Comparable&);
     const Comparable& find_min() const;
     const Comparable& find_max() const;
-    void print_tree(std::ostream& out=std::cout) const;
+    void print_tree(std::ostream& out=std::cout);
 };
 
 // Default Constructor
@@ -72,8 +72,6 @@ template <typename Comparable>
 void BinarySearchTree<Comparable>::make_empty() {
 	freeNodeTree(root);
 	root = NULL;
-
-	return true;
 }
 
 template <typename Comparable>
@@ -94,7 +92,7 @@ void BinarySearchTree<Comparable>::copy(Node<Comparable>* node)
     if( node == NULL )
         return;
 
-	insertNode(root, node->data);
+	insert(node->data);
     copy(node->left);
     copy(node->right);
 } 
@@ -109,15 +107,15 @@ bool BinarySearchTree<Comparable>::contains(const Comparable& v)
 
 // Search a Node
 template <typename Comparable>
-bool BinarySearchTree<Comparable>::searchNode(Node<Comparable>* root, Comparable v){
-	if(root == NULL){
+bool BinarySearchTree<Comparable>::searchNode(Node<Comparable>* node, Comparable v){
+	if(node == NULL){
 		return false;
-	}else if(root->data == v){
+	}else if(node->data == v){
 		return true;
-	}else if(v <= root->data){
-		return searchNode(root->left, v);
+	}else if(v <= node->data){
+		return searchNode(node->left, v);
 	}else{
-		return searchNode(root->right, v);
+		return searchNode(node->right, v);
 	}
 }
 
@@ -132,56 +130,56 @@ Node<Comparable>* BinarySearchTree<Comparable>::getNewNode(Comparable& v){
 
 // Insert a Node
 template <typename Comparable>
-Node<Comparable>* BinarySearchTree<Comparable>::insertNode(BinarySearchTree<Comparable>* root, Comparable& v){
-	if(root == NULL){
-		root = getNewNode(v);
-	}else if(v <= root->data){
-		root->left = insertNode(root->left, v);
+Node<Comparable>* BinarySearchTree<Comparable>::insertNode(Node<Comparable>* node, Comparable v){
+	if(node == NULL){
+		node = getNewNode(v);
+	}else if(v <= node->data){
+		node->left = insertNode(node->left, v);
 	}else{
-		root->right = insertNode(root->right, v);
+		node->right = insertNode(node->right, v);
 	}
-	return root;
+	return node;
 } 
 
 // Insert a Node
 template <typename Comparable>
 void BinarySearchTree<Comparable>::insert(const Comparable& v)
 {
-	insertNode(root, v);
+	root = insertNode(root, v);    
 } 
 
 // Delete a Node
 template <typename Comparable>
-Node<Comparable>* BinarySearchTree<Comparable>::deleteNode(Node<Comparable>* root, Comparable v){
-	if(root == NULL) return root;
-	else if(v < root->data) root->left = deleteNode(root->left, v);
-	else if(v > root->data) root->right = deleteNode(root->right, v);
+Node<Comparable>* BinarySearchTree<Comparable>::deleteNode(Node<Comparable>* node, Comparable v){
+	if(node == NULL) return node;
+	else if(v < node->data) node->left = deleteNode(node->left, v);
+	else if(v > node->data) node->right = deleteNode(node->right, v);
 	else{
-		if(root->left == NULL && root->right == NULL){
-			delete root;
-			root = NULL;
-		}else if(root->left == NULL){
-			Node<Comparable>* temp = root;
-			root = root->right;
+		if(node->left == NULL && node->right == NULL){
+			delete node;
+			node = NULL;
+		}else if(node->left == NULL){
+			Node<Comparable>* temp = node;
+			node = node->right;
 			delete temp;
-		}else if(root->right == NULL){
-			Node<Comparable>* temp = root;
-			root = root->left;
+		}else if(node->right == NULL){
+			Node<Comparable>* temp = node;
+			node = node->left;
 			delete temp;
 		}else{
 			// Two Children
-			Node<Comparable>* temp = findMin(root->right);
-			root->data = temp->data;
-			root->right = deleteNode(root->right,temp->data);
+			Node<Comparable>* temp = findMin(node->right);
+			node->data = temp->data;
+			node->right = deleteNode(node->right,temp->data);
 		}
 	}
-	return root;
+	return node;
 }
 
 template <typename Comparable>
 void BinarySearchTree<Comparable>::remove(const Comparable& v)
 {
-    deleteNode(root, v)
+    deleteNode(root, v);
 }
 
 template <typename Comparable>
@@ -196,6 +194,12 @@ const Comparable& BinarySearchTree<Comparable>::find_min() const
         node = node->left;
 	
     return node->data;
+}
+template <typename Comparable>
+Node<Comparable>* BinarySearchTree<Comparable>::findMin(Node<Comparable>* node)
+{
+	while(node->left != NULL) node = node->left;
+	return node;
 }
 
 template <typename Comparable>
@@ -215,27 +219,26 @@ const Comparable& BinarySearchTree<Comparable>::find_max() const
 
 // Print the Tree - Pre Order Traversal
 template <typename Comparable>
-void BinarySearchTree<Comparable>::print(Node<Comparable>* node, int depth, std::ostream& out=std::cout)
+void BinarySearchTree<Comparable>::print(Node<Comparable>* node, int depth, std::ostream& out)
 {
     if(node == NULL) 
         return;
     
-    print(root->left, depth + 1, out);
+    print(node->right, depth + 1, out);
 
     for(int i = 0; i < depth; i++)
         out << '\t';
 
     out << node->data << endl;
 
-    print(root->right, depth + 1, out);
+    print(node->left, depth + 1, out);
 }
 
 
 template <typename Comparable>
-void BinarySearchTree<Comparable>::print_tree(std::ostream& out=std::cout) const
+void BinarySearchTree<Comparable>::print_tree(std::ostream& out)
 {
-    print(root, 0);
-    
+    print(root, 0, out);    
 }
 
 
