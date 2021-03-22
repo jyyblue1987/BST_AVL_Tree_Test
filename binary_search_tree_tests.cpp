@@ -33,12 +33,19 @@ int main() {
     tree.print_tree();
 
     // copy contructor
+    cout << "Copy Contructor Test" << endl;
     BinarySearchTree<int> tree1 = tree;
-    int val = 20;
     tree1.insert(20);
-
     tree1.print_tree();
-    
 
+    // assign operator
+    cout << "Assign Operator Test" << endl;
+    BinarySearchTree<int> tree2;
+    tree2.insert(1);
+    tree2.insert(2);
+    tree2.print_tree();
+
+    tree2 = tree1;
+    tree2.print_tree();
 
 }

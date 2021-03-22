@@ -66,6 +66,8 @@ BinarySearchTree<Comparable>& BinarySearchTree<Comparable>::operator=(const Bina
 {
     make_empty();
     copy(obj.root);
+
+    return *this;
 }
 
 template <typename Comparable>
@@ -238,7 +240,8 @@ void BinarySearchTree<Comparable>::print(Node<Comparable>* node, int depth, std:
 template <typename Comparable>
 void BinarySearchTree<Comparable>::print_tree(std::ostream& out)
 {
-    print(root, 0, out);    
+    print(root, 0, out);
+    out << endl;    
 }
 
 
