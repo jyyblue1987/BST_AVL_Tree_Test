@@ -229,7 +229,7 @@ void BinarySearchTree<Comparable>::print(Node<Comparable>* node, int depth, std:
     print(node->right, depth + 1, out);
 
     for(int i = 0; i < depth; i++)
-        out << '\t';
+        out << "  ";
 
     out << node->data << endl;
 
