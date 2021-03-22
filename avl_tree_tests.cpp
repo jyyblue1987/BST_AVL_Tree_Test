@@ -30,10 +30,29 @@ int main() {
     std::cout << "tree: " << std::endl;
     tree.print_tree();
 
-    AVLTree<int> tree1;
-    for(int i =  0; i < 10; i++)
-        tree1.insert(i);
-
+    
+    // copy contructor
+    cout << "Copy Contructor Test" << endl;
+    AVLTree<int> tree1 = tree;
+    tree1.insert(20);
     tree1.print_tree();
+
+    // assign operator
+    cout << "Assign Operator Test" << endl;
+    AVLTree<int> tree2;
+    tree2.insert(1);
+    tree2.insert(2);
+    tree2.print_tree();
+
+    tree2 = tree1;
+    tree2.print_tree();
+
+
+    // Balance Test
+    AVLTree<int> tree5;
+    for(int i =  0; i < 10; i++)
+        tree5.insert(i);
+
+    tree5.print_tree();
     
 }
