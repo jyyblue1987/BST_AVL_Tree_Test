@@ -8,6 +8,12 @@
 using namespace std;
 
 int main() {
+    BinarySearchTree<int> tree7;
+    tree7.insert(13);
+    tree7.insert(5);
+    tree7.remove(13);
+    tree7.print_tree();
+    
     // TODO: write tests
     BinarySearchTree<int> tree;
     // insert 5 values into the tree

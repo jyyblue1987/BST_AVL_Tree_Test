@@ -135,9 +135,9 @@ template <typename Comparable>
 Node<Comparable>* BinarySearchTree<Comparable>::insertNode(Node<Comparable>* node, Comparable v){
 	if(node == NULL){
 		node = getNewNode(v);
-	}else if(v <= node->data){
+	}else if(v < node->data){
 		node->left = insertNode(node->left, v);
-	}else{
+	}else if(v > node->data){
 		node->right = insertNode(node->right, v);
 	}
 	return node;
@@ -181,7 +181,7 @@ Node<Comparable>* BinarySearchTree<Comparable>::deleteNode(Node<Comparable>* nod
 template <typename Comparable>
 void BinarySearchTree<Comparable>::remove(const Comparable& v)
 {
-    deleteNode(root, v);
+    root = deleteNode(root, v);
 }
 
 template <typename Comparable>

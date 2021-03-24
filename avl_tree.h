@@ -147,10 +147,10 @@ template <typename Comparable>
 AVNode<Comparable>* AVLTree<Comparable>::insertNode(AVNode<Comparable>* node, Comparable v){
 	if(node == NULL){
 		node = getNewNode(v);
-	}else if(v <= node->data){
+	}else if(v < node->data){
 		node->left = insertNode(node->left, v);
 		node = balance(node);
-	}else{
+	}else if(v > node->data){
 		node->right = insertNode(node->right, v);
 		node = balance(node);
 	}
@@ -195,7 +195,7 @@ AVNode<Comparable>* AVLTree<Comparable>::deleteNode(AVNode<Comparable>* node, Co
 template <typename Comparable>
 void AVLTree<Comparable>::remove(const Comparable& v)
 {
-    deleteNode(root, v);
+    root = deleteNode(root, v);
 }
 
 template <typename Comparable>
